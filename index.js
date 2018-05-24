@@ -29,7 +29,7 @@ if (isDevelopment) {
     require('webpack-dev-middleware')(compiler, {
       publicPath: config.output.publicPath,
       serverSideRender: true,
-      // stats: 'minimal',
+      stats: 'minimal',
     })
   )
 
