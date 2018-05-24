@@ -60,15 +60,7 @@ export const routes = [
         children: [
           {
             path: '/auction/:id',
-            getComponent: () => {
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  import('./routes/auction/AuctionRoute').then(module => {
-                    return module.AuctionRoute
-                  })
-                })
-              }, 3000)
-            },
+            Component: AuctionRoute,
             prepareVariables: params => ({
               id: 'shared-live-mocktion-k8s',
             }),
