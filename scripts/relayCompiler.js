@@ -26,10 +26,13 @@ if (process.argv.includes('--watch')) {
   args.push('--watch')
 }
 
-// use this flag if linking node modules
-if (process.argv.includes('--no-watchman')) {
-  args.push('--no-watchman')
-}
+// TODO: We don't need this as we're cloning projects side-by-side and setting
+// relay --src root one level below project, where reaction lives.
+
+// Use this flag if linking node modules
+// if (process.argv.includes('--no-watchman')) {
+//   args.push('--no-watchman')
+// }
 
 const proc = spawn(
   path.resolve(__dirname, '../node_modules/.bin/relay-compiler'),
@@ -44,13 +47,13 @@ proc.on('close', code => {
 function ensureRequirementsMet() {
   const requirements = [
     {
-      test: () => '../../metaphysics',
+      test: () => '../../reaction',
       log: () => {
         console.log(
           chalk.red('[scripts/relayCompiler] ERROR:'),
           chalk.white(
-            'Cannot find local copy of Metaphysics, which must be cloned and',
-            'setup alongside Force. See https://github.com/artsy/metaphysics for',
+            'Cannot find local copy of Reaction, which must be cloned and',
+            'setup alongside Force. See https://github.com/artsy/reaction for',
             'setup instructions.'
           )
         )

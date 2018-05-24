@@ -8,7 +8,7 @@
     "build": "NODE_ENV=production yarn sync:schema && yarn relay && yarn webpack -p",
     "postinstall": "patch-package",
     "relay": "node scripts/relayCompiler.js",
-    "start": "concurrently --kill-others 'yarn relay --watch' 'babel-node index.js --extensions '.js,.jsx,.ts,.tsx''",
+    "start": "yarn relay && concurrently --kill-others 'yarn relay --watch' 'babel-node index.js --extensions '.js,.jsx,.ts,.tsx''",
     "sync-schema": "rm -rf data && mkdir data && graphql-fetch-schema https://metaphysics-staging.artsy.net -o data",
     "webpack": "node -r babel-register ./node_modules/webpack/bin/webpack"
   },

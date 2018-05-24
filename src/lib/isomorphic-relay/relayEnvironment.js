@@ -1,7 +1,5 @@
 import 'isomorphic-fetch'
 import 'regenerator-runtime/runtime'
-// import RelayServerSSR from 'react-relay-network-modern-ssr/lib/server'
-// import RelayClientSSR from 'react-relay-network-modern-ssr/lib/client'
 import { Environment, RecordSource, Store } from 'relay-runtime'
 import {
   RelayNetworkLayer,

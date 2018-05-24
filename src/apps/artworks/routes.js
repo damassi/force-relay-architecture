@@ -6,10 +6,6 @@ import { ArtistRoute } from './routes/artist/ArtistRoute'
 import { AuctionRoute } from './routes/auction/AuctionRoute'
 import { ReactLoadableClientRoute } from './routes/react-loadable/ReactLoadableClientRoute'
 import { ReactLoadableServerRoute } from './routes/react-loadable/ReactLoadableServerRoute'
-// import ArtworkGrid from '@artsy/reaction/dist/Components/ArtworkGrid'
-import ArtworkGrid, {
-  TestComponent,
-} from '@artsy/reaction/dist/Components/ArtworkGrid'
 
 export const routes = [
   {
