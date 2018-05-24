@@ -45,7 +45,7 @@ export function createRelayEnvironment(cache) {
     urlMiddleware({
       url: process.env.METAPHYSICS_BASE_URL,
     }),
-    loggerMiddleware(),
+    // loggerMiddleware(),
   ])
 
   const source = new RecordSource()

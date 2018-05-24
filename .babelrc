@@ -6,7 +6,6 @@
     "@babel/typescript"
   ],
   "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
     "loadable-components/babel",
     ["relay", { "artifactDirectory": "./src/__generated__", "extensions": ".js,.ts" }],
     ["module-resolver", {
