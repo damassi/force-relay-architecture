@@ -7,7 +7,7 @@ import {
   RelayNetworkLayer,
   urlMiddleware,
   cacheMiddleware,
-  // loggerMiddleware,
+  loggerMiddleware,
 } from 'react-relay-network-modern'
 
 export function createRelayEnvironment(cache) {
@@ -45,7 +45,7 @@ export function createRelayEnvironment(cache) {
     urlMiddleware({
       url: process.env.METAPHYSICS_BASE_URL,
     }),
-    // loggerMiddleware(),
+    loggerMiddleware(),
   ])
 
   const source = new RecordSource()

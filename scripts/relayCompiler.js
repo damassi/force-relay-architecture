@@ -6,60 +6,28 @@ const path = require('path')
 const spawn = require('child_process').spawn
 const { execSync } = require('child_process')
 
-const metaphysicsMissing = !fs.existsSync(
-  path.join(__dirname, '../../metaphysics')
-)
-
-if (metaphysicsMissing) {
-  console.log(
-    chalk.red('[scripts/relayCompiler] ERROR:'),
-    chalk.white(
-      'Cannot find local copy of Metaphysics, which must exist alongside Force.',
-      'See https://github.com/artsy/metaphysics for setup instructions.'
-    )
-  )
-
-  process.exit(0)
-}
-
-const schemaMissing = !fs.existsSync(
-  path.join(__dirname, '../data/schema.graphql')
-)
-
-if (schemaMissing) {
-  console.log(
-    '[scripts/relayCompiler] Running `yarn sync-schema` to download GraphQL schema from ' +
-      `from ${process.env.METAPHYSICS_BASE_URL}...`
-  )
-
-  execSync('yarn sync-schema')
-}
+ensureRequirementsMet()
 
 // prettier-ignore
 const args = [
   '--extensions', 'js', 'jsx', 'ts', 'tsx',
-  '--schema', path.resolve(__dirname, '../data/schema.graphql'),
+  '--schema', path.resolve(process.cwd(), './data/schema.graphql'),
   '--language', 'typescript',
-
-  '--src', path.resolve(__dirname, '..'),
-  '--artifactDirectory', './src/__generated__',
-
+  '--src', path.resolve(process.cwd(), '../'),
+  '--artifactDirectory', path.resolve(process.cwd(), 'src/__generated__'),
   '--include',
-    'src/**',
-    'node_modules/@artsy/reaction/src/**',
-
+      'force-relay-architecture/src/**',
+      'reaction/src/**',
   '--exclude',
-    'node_modules/@artsy/reaction/node_modules/**',
-
-  '--no-watchman'
+      'reaction/node_modules/**',
 ];
 
 if (process.argv.includes('--watch')) {
   args.push('--watch')
 }
 
+// use this flag if linking node modules
 if (process.argv.includes('--no-watchman')) {
-  // use this flag if linking node modules
   args.push('--no-watchman')
 }
 
@@ -72,3 +40,49 @@ const proc = spawn(
 proc.on('close', code => {
   process.exit(code)
 })
+
+function ensureRequirementsMet() {
+  const requirements = [
+    {
+      test: () => '../../metaphysics',
+      log: () => {
+        console.log(
+          chalk.red('[scripts/relayCompiler] ERROR:'),
+          chalk.white(
+            'Cannot find local copy of Metaphysics, which must be cloned and',
+            'setup alongside Force. See https://github.com/artsy/metaphysics for',
+            'setup instructions.'
+          )
+        )
+      },
+      runCommand: () => process.exit(0),
+    },
+    {
+      test: () => '../data/schema.graphql',
+      log: () => {
+        console.log(
+          '[scripts/relayCompiler] Running `yarn sync-schema` to download GraphQL schema from ' +
+            `from ${process.env.METAPHYSICS_BASE_URL}...`
+        )
+      },
+      runCommand: () => execSync('yarn sync-schema'),
+    },
+    {
+      test: () => '../../.watchmanconfig',
+      log: () => {
+        console.log(
+          '[scripts/relayCompiler] .watchmanconfig missing. Creating from scratch...'
+        )
+      },
+      runCommand: () => execSync('cd ../ && touch .watchmanconfig'),
+    },
+  ]
+
+  requirements.forEach(requirement => {
+    const { test, log, runCommand } = requirement
+    if (!fs.existsSync(path.join(__dirname, test()))) {
+      log()
+      runCommand()
+    }
+  })
+}

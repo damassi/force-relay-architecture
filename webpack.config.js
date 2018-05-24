@@ -41,7 +41,7 @@ export default {
         include: /src/,
         loader: 'babel-loader',
         options: {
-          cacheDirectory: true,
+          cacheDirectory: '.babel-cache',
         },
       },
     ],
@@ -74,6 +74,7 @@ export default {
         SSR_ENABLED: JSON.stringify(SSR_ENABLED),
       },
     }),
+    new webpack.IgnorePlugin(/..\/reaction\/node_modules/),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     // webpack.optimize.LimitChunkCountPlugin // Prevent chunk output

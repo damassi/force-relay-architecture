@@ -6,7 +6,10 @@ import { ArtistRoute } from './routes/artist/ArtistRoute'
 import { AuctionRoute } from './routes/auction/AuctionRoute'
 import { ReactLoadableClientRoute } from './routes/react-loadable/ReactLoadableClientRoute'
 import { ReactLoadableServerRoute } from './routes/react-loadable/ReactLoadableServerRoute'
-import { ArtworkGrid } from '@artsy/reaction/dist/Components/ArtworkGrid'
+// import ArtworkGrid from '@artsy/reaction/dist/Components/ArtworkGrid'
+import ArtworkGrid, {
+  TestComponent,
+} from '@artsy/reaction/dist/Components/ArtworkGrid'
 
 export const routes = [
   {
@@ -21,14 +24,17 @@ export const routes = [
         Component: () => <div>About page!</div>,
       },
       {
-        path: '/artsy/:id',
-        prepareVariables: params => ({ id: 'pablo-picasso' }),
-        Component: ArtworkGrid,
-        // getComponent: ({ artworks }) => {
-        //   return import('@artsy/reaction/dist/Components/ArtworkGrid').then(
-        //     module => module.ArtworkGrid
-        //   )
-        // },
+        path: '/artsy/:artistID',
+        prepareVariables: params => ({ artistID: 'pablo-picasso' }),
+        getComponent: ({ artworks }) => {
+          return import('@artsy/reaction/dist/Components/ArtworkGrid').then(
+            ({ default: ArtworkGrid }) => props => (
+              <div>
+                <ArtworkGrid {...props.artist} />
+              </div>
+            )
+          )
+        },
         query: graphql`
           query routes_ArtsyQuery($artistID: String!) {
             artist(id: $artistID) {
@@ -54,10 +60,15 @@ export const routes = [
         children: [
           {
             path: '/auction/:id',
-            getComponent: () =>
-              import('./routes/auction/AuctionRoute').then(module => {
-                return module.AuctionRoute
-              }),
+            getComponent: () => {
+              return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  import('./routes/auction/AuctionRoute').then(module => {
+                    return module.AuctionRoute
+                  })
+                })
+              }, 3000)
+            },
             prepareVariables: params => ({
               id: 'shared-live-mocktion-k8s',
             }),

@@ -12,5 +12,6 @@ yarn-error.log
 .tmp/
 _archive
 
+.babel-cache
 build/*
 __generated__

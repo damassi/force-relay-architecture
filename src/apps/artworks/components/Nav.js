@@ -12,7 +12,7 @@ export default function Nav() {
         <Link to="/about">About</Link>
       </li>
       <li>
-        <PreloadLink to="/artsy">Artsy</PreloadLink>
+        <PreloadLink to="/artsy/pablo-picasso">Artsy</PreloadLink>
       </li>
       <li>
         <PreloadLink to="/artist/pablo-picasso">Pablo Picasso</PreloadLink>
