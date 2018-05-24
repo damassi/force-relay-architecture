@@ -19,7 +19,7 @@ export default {
   entry: {
     artworks: [
       'webpack-hot-middleware/client?reload=true',
-      './src/apps/artworks/client.js',
+      './src/apps/isomorphic-relay-example/client.js',
     ],
   },
   output: {
